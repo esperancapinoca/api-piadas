@@ -2,25 +2,25 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-const piadas = [
+const piadas = require('./piadas.json')
 
-{intoducao:"", remate: ""},
-{introducao:"", remate:""},
-{intoducao:"", remate: ""},
-{introducao:"", remate:""},
-
-];
-
-app.get('/piada', (req, res)=>{
+app.get('/piadas', (req, res) =>{
     try{
-        
-        const aleatorio = Math.floor(Math.random() * piadas.length);
-        const piada = piadas[aleatorio];
-        res.status(200).json(piada);
+            res.json(piadas);
 
     }catch(e){
+        res.status(500).json({e: "Erro ao obter piada"});
+    }
+});
 
-        res.status(500).json({e:'Erro interno no servidor'});
+app.get('/piadas/aleatoria', (req, res) =>{
+    try{
+        const index = Math.floor(Math.random() * piadas.length);
+        const piada = piadas[index];
+        res.json(piada);
+
+    }catch(e){
+        res.status(500).json({e: "Erro ao obter piada aleatoria"});
     }
 });
 
